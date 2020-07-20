@@ -2,44 +2,45 @@
   <div class="about">
     <h1>This is an about page</h1>
 
+    <section class="section">
+    <!-- Form to search for movie by title -->
+    <label class="label">Azure API Test</label>
+    
     <div class="field">
-      <label class="label">Name</label>
       <div class="control">
-        <input class="input" type="text" placeholder="Text input" v-model="query">
+        <input class="input" type="text" placeholder="Text Input" v-model="query">
+      </div>
+      <div class="control">
+        <a class="button is-info" @click="fetchMovie">Search</a>
       </div>
     </div>
-
-    <div class="control">
-      <button class="button is-link" @click="fetchAPI">Submit</button>
+    <!-- Notification containing info from a successful API call -->
+    <div class="notification" v-if="typeof movie.stream_service != 'undefined'">
+      <div class="level-item title">{{ movie.stream_service }}</div>
+      <hr>
     </div>
-
-    <div v-if="rowdata">
-      <h3>{{rowdata.Data}}</h3>
-    </div>
+    </section>
 
   </div>
 </template>
 
 <script>
 
-import axios from 'axios'
-
 export default {
   data: () => ({
     query: "",
-    rowdata: {},
-    url_base: "https://vzafhox7zf.execute-api.us-east-2.amazonaws.com/dev/se3/"
+    movie: {},
+    url_base: "http://summerstream.azurewebsites.net/index.php",
   }),
   methods: {
-    fetchAPI () {
-      axios.get(`${this.url_base}?name=${this.query}`)
-        .then(res => {
-          return res.data;
-      }).then(this.setResults);
+    fetchMovie () {
+      fetch(`${this.url_base}?movie_title=${this.query}`)
+      .then(res => res.json())
+      .then(body => this.setResults(body));
     },
     setResults (results) {
-      this.rowdata = results;
-    },
+      this.movie = results;
+    }
   }
 }
 </script>

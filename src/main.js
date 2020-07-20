@@ -3,7 +3,6 @@ import App from './App.vue'
 import router from './router'
 
 import 'bulma'
-import 'axios'
 
 Vue.config.productionTip = false
 
