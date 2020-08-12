@@ -16,10 +16,44 @@
     </div>
     <!-- Notification containing info from a successful API call -->
     <div class="notification" v-if="typeof movie.stream_service != 'undefined'">
-      <div class="level-item title">{{ movie.stream_service }}</div>
+      <h1>{{ movie.stream_service[0] }}</h1>
+      <div class="level-item title">{{ movie.stream_service }} {{ movie.poster }} 
+        <div v-for="service in movie.stream_service" :key="service">
+          <p class="subtitle">{{ service }}</p>
+        </div>
+        <img v-bind:src="movie.poster" v-bind:alt="movie.title">
+      </div>
+
       <hr>
     </div>
+    <div class="container">
+      <div class="columns">
+        <div class="column is-quarter"></div>
+        <div class="column is-half">
+          <img v-bind:src="testRequest[0].poster" :alt="testRequest[0].title">
+          
+        </div>
+        <div class="column is-quarter"></div>
+      </div>
+    </div>
     </section>
+
+    <article class="media">
+      <figure class="media-left">
+        <p class="image">
+          <img v-bind:src="testRequest[0].poster" :alt="testRequest[0].title">
+        </p>
+      </figure>
+      <div class="media-content">
+        <div class="content">
+          <h1 class="title"> {{ testRequest[0].title }}</h1>
+          <p>These are the providers you can watch on for free with a subscription:</p>
+          <div v-for="service in testRequest[0].stream_service" :key="service.title">
+            <p>{{service}}</p>
+          </div>
+        </div>
+      </div>
+    </article>
 
   </div>
 </template>
@@ -31,6 +65,13 @@ export default {
     query: "",
     movie: {},
     url_base: "http://summerstream.azurewebsites.net/index.php",
+    testRequest: [
+      {
+        title: "Terminator 2",
+        stream_service: ["HBO", "Netflix"],
+        poster: "https://resizing.flixster.com/Cv2EPiuODhgnnvyzXNDUzt4pK4o=/206x305/v1.bTsxMjMyNTU1MTtqOzE4NTAyOzEyMDA7MjIwMDsyOTM0"
+      }
+    ]
   }),
   methods: {
     fetchMovie () {
